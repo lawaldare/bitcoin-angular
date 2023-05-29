@@ -1,0 +1,39 @@
+h1 {
+  margin: 0;
+  margin-top: 30px;
+  text-align: center;
+}
+
+section {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  @media only screen and (max-width: 900px) {
+    flex-direction: column;
+  }
+}
+
+input {
+  width: 350px;
+  margin: 0 20px;
+  @media only screen and (max-width: 900px) {
+    margin: 20px 0;
+  }
+}
+
+p {
+  text-align: center;
+  color: gray;
+  font-size: 12px;
+}
+
+.result {
+  font-size: 1.2rem;
+  margin: 50px;
+  color: rgb(8, 204, 8);
+}
+
+.red-color {
+  color: rgb(235, 27, 27) !important;
+}
