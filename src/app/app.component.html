@@ -1,26 +1,29 @@
 <h1>Bitcoin Calculator</h1>
 <p>Last Update: {{ updateTime }}</p>
-<section>
-  <input nz-input placeholder="BTC/USD when bought" nzSize="large" [(ngModel)]="btcBought"
-    (ngModelChange)="calculate()" />
-  <input nz-input placeholder="Current BTC" nzSize="large" [(ngModel)]="btcCurrent" disabled />
-  <input nz-input placeholder="How many BTC bought" nzSize="large" [(ngModel)]="btcAmount"
-    (ngModelChange)="calculate()" />
-</section>
-<!-- <nz-select nzShowSearch nzAllowClear nzPlaceHolder="Select OS" [(ngModel)]="selectedOS">
-  <nz-option nzCustomContent nzLabel="USD" nzValue="usd">
-    <span>$</span>
-    USD
-  </nz-option>
-  <nz-option nzCustomContent nzLabel="GBP" nzValue="gbp">
-    <span>£</span>
-    GBP
-  </nz-option>
-  <nz-option nzCustomContent nzLabel="EUR" nzValue="eur">
-    <span>E</span>
-    EUR
-  </nz-option>
-</nz-select> -->
+<main>
+  <section>
+    <label>BTC current rate in {{ selectedCurrency }}</label>
+    <article>
+      <nz-select [(ngModel)]="selectedCurrency" (ngModelChange)="changeCurrency($event)">
+        <nz-option *ngFor="let currency of currencies" [nzLabel]="currency.label" [nzValue]="currency.value">
+          USD
+        </nz-option>
+      </nz-select>
+      <input nz-input placeholder="Current BTC" nzSize="large" [(ngModel)]="btcCurrent" disabled />
+    </article>
+  </section>
+  <section>
+    <label>BTC rate when bought in {{ selectedCurrency }}</label>
+    <input nz-input placeholder="BTC rate when bought" nzSize="large" [(ngModel)]="btcBought"
+      (ngModelChange)="calculate()" />
+  </section>
+  <section>
+    <label>How much BTC bought in {{ selectedCurrency }}</label>
+    <input nz-input placeholder="How many BTC bought" nzSize="large" [(ngModel)]="btcAmount"
+      (ngModelChange)="calculate()" />
+  </section>
+</main>
+
 <ng-container *ngIf="btcBought && btcAmount">
   <p class="result" [class.red-color]="saleOutcome === 'loss'">Great! You made a {{ saleOutcome }} of ${{
     sale.toFixed(2) }} ({{

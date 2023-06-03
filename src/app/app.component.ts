@@ -1,6 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { BitcoinService } from './bitcoin.service';
 
+interface CurrencyData {
+  code: string;
+  description: string;
+  rate: string;
+  rate_float: number;
+  symbol: string;
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -15,16 +23,35 @@ export class AppComponent implements OnInit {
   sale!: number;
   salePercentageRound!: number;
   saleOutcome!: string;
-  selectedOS = null;
+  selectedCurrency = 'USD';
+  data!: Record<string, CurrencyData>;
+  currencies = [
+    {
+      label: 'USD',
+      value: 'USD',
+    },
+    {
+      label: 'GBP',
+      value: 'GBP',
+    },
+    {
+      label: 'EUR',
+      value: 'EUR',
+    },
+  ];
 
   constructor(private bitcoinService: BitcoinService) {}
 
   ngOnInit(): void {
     this.bitcoinService.getCurrentBalance().subscribe((data: any) => {
-      this.btcCurrent = data.bpi.USD.rate_float.toFixed(2);
+      this.data = data.bpi;
+      this.setCurrency();
       this.updateTime = data.time.updateduk;
-      console.log(data);
     });
+  }
+
+  setCurrency() {
+    this.btcCurrent = this.data[this.selectedCurrency].rate_float.toFixed(2);
   }
 
   calculate() {
@@ -38,5 +65,11 @@ export class AppComponent implements OnInit {
       const salePercentage = (this.sale / (btcBought * btcAmount)) * 100;
       this.salePercentageRound = Math.round(salePercentage);
     }
+  }
+
+  changeCurrency(currency: string) {
+    this.selectedCurrency = currency;
+    this.setCurrency();
+    this.calculate();
   }
 }
